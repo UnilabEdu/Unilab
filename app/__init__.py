@@ -1,19 +1,23 @@
 from flask import Flask
-from .config import Config
-from .extensions import db, migrate, jwt, mail
-from .routes import bp as main_bp
-from .cli import init_db
 
-def create_app():
+def create_app(config_class='config'):
     app = Flask(__name__)
-    app.config.from_object(Config)
-
-    db.init_app(app)
-    migrate.init_app(app, db)
-    jwt.init_app(app)
-    mail.init_app(app)
-
-    app.register_blueprint(main_bp)
-    app.cli.add_command(init_db)
-
+    app.config.from_object(config_class)
+    
+    register_extensions(app)
+    register_blueprints(app)
+    register_commands(app)
+    
     return app
+
+def register_extensions(app):
+    from .extensions import db
+    db.init_app(app)
+
+def register_blueprints(app):
+    from .api.hello import bp
+    app.register_blueprint(bp, url_prefix='/api')
+
+def register_commands(app):
+    from .commands import init_db_command
+    app.cli.add_command(init_db_command)
