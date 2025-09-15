@@ -1,31 +1,37 @@
 from flask import Flask
+from app.config import Config
+from .commands import populate_db_command, init_db_command
+from .extensions import db, migrate, api
+from app.endpoints import CourseApi
+
+COMMANDS = [init_db_command, populate_db_command]
 
 
-def create_app(config_class='config'):
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config_class)
+    app.config.from_object(Config)
 
     register_extensions(app)
-    register_blueprints(app)
     register_commands(app)
 
     return app
 
 
 def register_extensions(app):
-    from .extensions import db
+    # Flask-SQLAlchemy
     db.init_app(app)
 
+    # Flask-Migrate
+    migrate.init_app(app, db)
 
-def register_blueprints(app):
-    from .api.hello import bp
-    app.register_blueprint(bp, url_prefix='/api')
+    # Flask-Restx
+    api.init_app(app)
 
 
 def register_commands(app):
-    from .commands import init_db_command
-    app.cli.add_command(init_db_command)
+    for command in COMMANDS:
+        app.cli.add_command(command)
 
 
 # Add this import to ensure models are registered
-from app.models import User, Mentor, Course
+from app.models import User, Mentor, Course, News

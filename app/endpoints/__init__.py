@@ -1,0 +1,1 @@
+from app.endpoints.courses.courses_api import CourseApi

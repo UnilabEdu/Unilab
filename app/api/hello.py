@@ -1,7 +1,0 @@
-from flask import Blueprint, jsonify
-
-bp = Blueprint('hello', __name__)
-
-@bp.route('/hello')
-def hello_world():
-    return jsonify(message="Hello World!")
