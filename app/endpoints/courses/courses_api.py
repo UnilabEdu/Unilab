@@ -22,7 +22,7 @@ class CourseDetail(Resource):
             "id": course.id,
             "title": course.title,
             "description": course.description,
-            "mentor_name": course.mentor.name,
+            "mentor_name": course.mentor.name if course.mentor else None,
             "type": course.type,
             "syllabus_link": course.syllabus_link,
             "registration_link": course.registration_link

@@ -1,14 +1,16 @@
 import click
 
+from werkzeug.security import generate_password_hash
+
 from app.extensions import db
-from app.models import Course, Mentor
+from app.models import Course, Mentor, User
 
 def init_db():
     db.drop_all()
     db.create_all()
 
 def populate_db():
-    mentor = Mentor(name="prof1", about="prof info", photo="poto")
+    mentor = Mentor(name="prof1", about="prof info", image="poto")
     db.session.add(mentor)
     db.session.commit()
 
@@ -24,6 +26,11 @@ def populate_db():
                              syllabus_link=course["syllabus_link"], type=course["type"],
                             registration_link=course["registration_link"], mentor_id=course["mentor_id"])
         db.session.add(new_course)
+    db.session.commit()
+
+    # Admin
+    admin = User(username="admin", password=generate_password_hash("admin123"))
+    db.session.add(admin)
     db.session.commit()
 
 @click.command('init_db')

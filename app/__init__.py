@@ -1,8 +1,13 @@
 from flask import Flask
+from flask_admin.menu import MenuLink
+
 from app.config import Config
 from .commands import populate_db_command, init_db_command
-from .extensions import db, migrate, api
+from .extensions import db, migrate, api, login_manager, admin
 from app.endpoints import CourseApi
+from app.admin_views.base import SecureIndexView
+from app.admin_views import CourseView, MentorView, NewsView
+from app.auth.routes import auth_bp
 
 COMMANDS = [init_db_command, populate_db_command]
 
@@ -26,6 +31,24 @@ def register_extensions(app):
 
     # Flask-Restx
     api.init_app(app)
+
+    # Flask-Login
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(_id):
+        return User.query.get(_id)
+
+    #Flask-Admin
+    admin.init_app(app, index_view=SecureIndexView())
+    admin.add_view(CourseView(Course, db.session))
+    admin.add_view(MentorView(Mentor, db.session))
+    admin.add_view(NewsView(News, db.session))
+
+    admin.add_link(MenuLink("Log Out", url="/logout", icon_type="fa", icon_value="fa-sign-out"))
+
+    # Blueprint
+    app.register_blueprint(auth_bp)
 
 
 def register_commands(app):
