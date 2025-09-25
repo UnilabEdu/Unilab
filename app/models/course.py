@@ -10,4 +10,9 @@ class Course(BaseModel):
     syllabus_link = db.Column(db.String(255), nullable=True)
     type = db.Column(db.String(100), nullable=False)
     registration_link = db.Column(db.String(255), nullable=False)
+
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id'))
+    mentor = db.relationship("Mentor", back_populates="courses")
+
+    def __str__(self):
+        return self.title
