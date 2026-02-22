@@ -9,4 +9,7 @@ class Mentor(BaseModel):
     about = db.Column(db.Text, nullable=False)
     image = db.Column(db.String(255), nullable=False)
 
-    courses = db.relationship('Course', backref='mentor', lazy=True)
+    courses = db.relationship("Course", back_populates="mentor")
+
+    def __str__(self):
+        return self.name
