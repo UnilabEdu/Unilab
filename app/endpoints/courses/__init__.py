@@ -2,7 +2,7 @@ from flask_restx import fields
 
 from app.extensions import api
 
-course_ns = api.namespace("Courses", description="Course endpoints", path='/api')
+course_ns = api.namespace("Courses", path='/api')
 
 mentor_model = course_ns.model("Mentor", {
     "id": fields.Integer,
