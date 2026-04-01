@@ -57,4 +57,4 @@ def register_commands(app):
 
 
 # Add this import to ensure models are registered
-from app.models import User, Mentor, Course, News
+from app.models import User, Mentor, Course, News, Slider
