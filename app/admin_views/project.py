@@ -14,7 +14,7 @@ def generate_filename(obj, file):
     return f"{uuid4()}{extension}"
 
 
-class CourseView(SecureModelView):
+class ProjectView(SecureModelView):
     create_modal = False
     edit_modal = False
 
@@ -22,16 +22,14 @@ class CourseView(SecureModelView):
     can_create = True
     can_edit = True
 
-    column_list = ["image", "title", "description", "type", "syllabus_link", "mentor"]
+    column_list = ["image", "name", "course", "link", "description"]
 
     column_labels = {
         "image": "ფოტო",
-        "title": "დასახელება",
+        "name": "სახელი",
+        "course": "კურსი",
+        "link": "ლინკი",
         "description": "აღწერა",
-        "type": "ტიპი",
-        "syllabus_link": "სილაბუსი",
-        "registration_link": "რეგისტრაცია",
-        "mentor": "ხელმძღვანელი",
     }
 
     column_formatters = {
@@ -42,27 +40,26 @@ class CourseView(SecureModelView):
         "description": lambda v, c, m, p: (
             (m.description[:80] + "…") if m.description and len(m.description) > 80 else m.description
         ),
-        "syllabus_link": lambda v, c, m, p: Markup(
-            f"<a href='{m.syllabus_link}' target='_blank'>გახსნა ↗</a>"
-        ) if m.syllabus_link else "—",
     }
 
-    form_columns = ["title", "description", "image", "type", "syllabus_link", "registration_link", "mentor"]
+    form_columns = ["name", "course", "link", "description", "image"]
 
     form_overrides = {"image": ImageUploadField}
     form_args = {
         "image": {
             "label": "ფოტო",
             "base_path": Config.UPLOAD_PATH,
-
             "namegen": generate_filename,
             "allowed_extensions": ["jpg", "jpeg", "png", "webp", "gif"],
         }
     }
 
+    # Confirmation message on delete
+    delete_template = "admin/delete_confirmation.html"
+
     def on_model_delete(self, model):
-        flash(f'კურსი "{model}" წაიშალა.', "success")
+        flash(f'პროექტი "{model}" წაიშალა.', "success")
 
     def after_model_change(self, form, model, is_created):
         action = "დაემატა" if is_created else "განახლდა"
-        flash(f'კურსი "{model}" წარმატებით {action}.', "success")
+        flash(f'პროექტი "{model}" წარმატებით {action}.', "success")
