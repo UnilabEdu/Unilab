@@ -10,36 +10,41 @@ from flask_admin.form import ImageUploadField
 
 
 def generate_filename(obj, file):
-    name, extension = path.splitext(file.filename)
+    _, extension = path.splitext(file.filename)
     return f"{uuid4()}{extension}"
 
-class MentorView(SecureModelView):
-    create_modal = False
-    edit_modal = False
+
+class SliderView(SecureModelView):
+    create_modal = True
+    edit_modal = True
 
     can_delete = True
     can_create = True
     can_edit = True
 
-    column_list = ["image", "name", "about"]
+    column_default_sort = ('order', False)
+
+    column_list = ["image", "title", "subtitle", "order", "is_active"]
 
     column_labels = {
         "image": "ფოტო",
-        "name": "სახელი და გვარი",
-        "about": "მცირე აღწერა",
+        "title": "სათაური",
+        "subtitle": "ქვესათაური",
+        "order": "თანმიმდევრობა",
+        "is_active": "აქტიური",
     }
 
     column_formatters = {
         "image": lambda v, c, m, n: Markup(
-            f"<img src='/static/upload/{m.image}' width=70 "
-            f"style='border-radius:50%; object-fit:cover; height:70px;'/>"
+            f"<img src='/static/upload/{m.image}' width=140 "
+            f"style='border-radius:6px; object-fit:cover; height:80px;'/>"
         ) if m.image else Markup("<span style='color:#aaa'>ფოტო არ არის</span>"),
-        "about": lambda v, c, m, p: (
-            (m.about[:80] + "…") if m.about and len(m.about) > 80 else m.about
+        "subtitle": lambda v, c, m, p: (
+            (m.subtitle[:80] + "…") if m.subtitle and len(m.subtitle) > 80 else m.subtitle
         ),
     }
 
-    form_columns = ["name", "about", "image"]
+    form_columns = ["image", "title", "subtitle", "order", "is_active"]
 
     form_overrides = {"image": ImageUploadField}
     form_args = {
@@ -52,10 +57,8 @@ class MentorView(SecureModelView):
     }
 
     def on_model_delete(self, model):
-        flash(f'ხელმძღვანელი "{model}" წაიშალა.', "success")
+        flash(f'სლაიდი "{model}" წაიშალა.', "success")
 
     def after_model_change(self, form, model, is_created):
         action = "დაემატა" if is_created else "განახლდა"
-        flash(f'ხელმძღვანელი "{model}" წარმატებით {action}.', "success")
-
-
+        flash(f'სლაიდი "{model}" წარმატებით {action}.', "success")

@@ -7,6 +7,7 @@ class Course(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(255), nullable=True)
     syllabus_link = db.Column(db.String(255), nullable=True)
     type = db.Column(db.String(100), nullable=False)
     registration_link = db.Column(db.String(255), nullable=False)
