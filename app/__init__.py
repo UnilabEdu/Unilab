@@ -6,7 +6,7 @@ from .commands import populate_db_command, init_db_command
 from .extensions import db, migrate, api, login_manager, admin
 from app.endpoints import CourseApi, NewsApi
 from app.admin_views.base import SecureIndexView
-from app.admin_views import CourseView, MentorView, NewsView, SliderView, ProjectView
+from app.admin_views import CourseView, MentorView, NewsView, SliderView, ProjectView, StatisticView
 from app.auth.routes import auth_bp
 
 COMMANDS = [init_db_command, populate_db_command]
@@ -46,6 +46,7 @@ def register_extensions(app):
     admin.add_view(NewsView(News, db.session))
     admin.add_view(SliderView(Slider, db.session))
     admin.add_view(ProjectView(Project, db.session))
+    admin.add_view(StatisticView(Statistic, db.session))
 
     admin.add_link(MenuLink("Log Out", url="/logout", icon_type="fa", icon_value="fa-sign-out"))
 
