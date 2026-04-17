@@ -4,3 +4,5 @@ from app.admin_views.news import NewsView
 from app.admin_views.slider import SliderView
 from app.admin_views.project import ProjectView
 from app.admin_views.statistic import StatisticView
+from app.admin_views.footer_info import FooterInfoView
+from app.admin_views.faq import FAQView
