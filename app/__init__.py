@@ -5,7 +5,7 @@ from app.config import Config
 from .commands import populate_db_command, init_db_command
 from .extensions import db, migrate, api, login_manager, admin
 from app.models import News, Mentor, Course, User, Project, Slider
-from app.endpoints import CourseApi, NewsApi
+from app.endpoints import CourseApi, NewsApi, FAQApi
 from app.admin_views.base import SecureIndexView
 from app.admin_views import (CourseView, MentorView, NewsView, SliderView
 , ProjectView, StatisticView, FooterInfoView, FAQView)
