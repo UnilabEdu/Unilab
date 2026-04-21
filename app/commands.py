@@ -3,7 +3,7 @@ import click
 from werkzeug.security import generate_password_hash
 
 from app.extensions import db
-from app.models import Course, Mentor, User
+from app.models import Course, Mentor, User, Statistic, FooterInfo
 
 def init_db():
     db.drop_all()
@@ -26,6 +26,10 @@ def populate_db():
                              syllabus_link=course["syllabus_link"], type=course["type"],
                             registration_link=course["registration_link"], mentor_id=course["mentor_id"])
         db.session.add(new_course)
+    db.session.commit()
+
+    db.session.add(Statistic())
+    db.session.add(FooterInfo())
     db.session.commit()
 
     # Admin
