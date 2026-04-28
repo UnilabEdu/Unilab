@@ -3,7 +3,7 @@ from flask_admin.menu import MenuLink
 
 from app.config import Config
 from .commands import populate_db_command, init_db_command
-from .extensions import db, migrate, api, login_manager, admin
+from .extensions import db, migrate, api, login_manager, admin, cors
 from app.models import News, Mentor, Course, User, Project, Slider
 from app.endpoints import CourseApi, NewsApi, FAQApi
 from app.admin_views.base import SecureIndexView
@@ -16,6 +16,7 @@ COMMANDS = [init_db_command, populate_db_command]
 
 def create_app():
     app = Flask(__name__)
+    cors.init_app(app)
     app.config.from_object(Config)
 
     register_extensions(app)
