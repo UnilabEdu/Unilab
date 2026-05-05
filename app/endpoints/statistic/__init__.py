@@ -1,6 +1,7 @@
 from flask_restx import fields
 from app.extensions import api
 
+
 statistic_ns = api.namespace("Statistic", path='/api')
 
 statistic_model = statistic_ns.model("Statistic", {

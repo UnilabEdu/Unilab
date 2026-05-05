@@ -9,6 +9,7 @@ class FooterApi(Resource):
     @footer_ns.marshal_with(footer_model)
     def get(self):
         footer = FooterInfo.query.first()
+
         if not footer:
             abort(404, message="ფუტერის ინფო ვერ მოიძებნა")
         return footer

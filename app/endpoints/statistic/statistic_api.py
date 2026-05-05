@@ -9,6 +9,7 @@ class StatisticApi(Resource):
     @statistic_ns.marshal_with(statistic_model)
     def get(self):
         statistic = Statistic.query.order_by(Statistic.id.desc()).first()
+
         if not statistic:
             abort(404, message="სტატისტიკა ვერ მოიძებნა")
         return statistic

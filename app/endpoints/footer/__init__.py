@@ -3,6 +3,7 @@ from app.extensions import api
 
 footer_ns = api.namespace("Footer", path='/api')
 
+
 footer_model = footer_ns.model("Footer", {
     "id": fields.Integer,
     "address": fields.String,
