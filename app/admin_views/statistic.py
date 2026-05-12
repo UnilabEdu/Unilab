@@ -2,7 +2,7 @@ from app.admin_views.base import SecureModelView
 
 
 class StatisticView(SecureModelView):
-    can_create = False
+    can_create = True
     can_delete = False
     can_edit = True
 
