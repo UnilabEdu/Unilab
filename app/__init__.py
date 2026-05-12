@@ -4,9 +4,10 @@ from flask_admin.menu import MenuLink
 from app.config import Config
 from .commands import populate_db_command, init_db_command
 from .extensions import db, migrate, api, login_manager, admin
-from app.endpoints import CourseApi, NewsApi
+from app.endpoints import CourseApi, NewsApi, FAQApi
 from app.admin_views.base import SecureIndexView
-from app.admin_views import CourseView, MentorView, NewsView, SliderView, ProjectView
+from app.admin_views import (CourseView, MentorView, NewsView, SliderView
+, ProjectView, StatisticView, FooterInfoView, FAQView)
 from app.auth.routes import auth_bp
 
 COMMANDS = [init_db_command, populate_db_command]
@@ -46,6 +47,9 @@ def register_extensions(app):
     admin.add_view(NewsView(News, db.session))
     admin.add_view(SliderView(Slider, db.session))
     admin.add_view(ProjectView(Project, db.session))
+    admin.add_view(StatisticView(Statistic, db.session))
+    admin.add_view(FooterInfoView(FooterInfo, db.session, name="ფუტერი"))
+    admin.add_view(FAQView(FrequentlyAskedQuestion, db.session, name="FAQ"))
 
     admin.add_link(MenuLink("Log Out", url="/logout", icon_type="fa", icon_value="fa-sign-out"))
 
@@ -59,4 +63,5 @@ def register_commands(app):
 
 
 # Add this import to ensure models are registered
-from app.models import User, Mentor, Course, News, Slider, Project, ProjectUser
+from app.models import (User, Mentor, Course, News, Slider, Project, ProjectUser
+, Statistic, FooterInfo, FrequentlyAskedQuestion)
