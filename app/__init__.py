@@ -4,7 +4,7 @@ from flask_admin.menu import MenuLink
 from app.config import Config
 from .commands import populate_db_command, init_db_command
 from .extensions import db, migrate, api, login_manager, admin
-from app.endpoints import CourseApi, NewsApi, FAQApi
+from app.endpoints import CourseApi, NewsApi, FAQApi, SliderApi, FooterApi, ProjectApi, StatisticApi
 from app.admin_views.base import SecureIndexView
 from app.admin_views import (CourseView, MentorView, NewsView, SliderView
 , ProjectView, StatisticView, FooterInfoView, FAQView)
